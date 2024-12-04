@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'CSS/big_admin.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body><nav class="navbar navbar-expand-lg  py-3 ms-0  text-uppercase border-bottom  sticky-top">
+    <div class="container">
+        <a class="navbar-brand fs-3 " href="#">Welcome {{username}}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-4 ">
+
+                <li class="nav-item">
+                    <a class="nav-link fs-5 " href="{% url 'go-start'%}">Logout</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="filter-section">
+            <form>
+                <label for="from_date">From:</label>
+                <input type="date" id="from_date" name="from_date">
+                <label for="to_date">To:</label>
+                <input type="date" id="to_date" name="to_date">
+                <button type="button" id="filter-btn">Filter</button>
+                <button type="button" id="report-btn">Generate Report</button>
+            </form>
+        </div>
+        <div class="charts-section">
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h2>All Tasks</h2>
+                    <canvas id="all-pie-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>All Tasks</h2>
+                    <canvas id="all-bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>All Tasks</h2>
+                    <canvas id="all-line-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h2>Upcoming Tasks</h2>
+                    <canvas id="upcoming-pie-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Upcoming Tasks</h2>
+                    <canvas id="upcoming-bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Upcoming Tasks</h2>
+                    <canvas id="upcoming-line-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h2>Ongoing Tasks</h2>
+                    <canvas id="ongoing-pie-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Ongoing Tasks</h2>
+                    <canvas id="ongoing-bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Ongoing Tasks</h2>
+                    <canvas id="ongoing-line-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h2>Hold Tasks</h2>
+                    <canvas id="hold-pie-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Hold Tasks</h2>
+                    <canvas id="hold-bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Hold Tasks</h2>
+                    <canvas id="hold-line-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h2>Closed Tasks</h2>
+                    <canvas id="closed-pie-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Closed Tasks</h2>
+                    <canvas id="closed-bar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                     <h2>Closed Tasks</h2>
+                    <canvas id="closed-line-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'JS/big_admin.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

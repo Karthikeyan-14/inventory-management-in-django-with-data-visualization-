@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Query Raiser App Dashboard</title>
+  <link rel="stylesheet" href="{% static 'CSS/small_admin.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+   <!-- Navigation Bar -->
+      <nav class="navbar navbar-expand-lg  py-3 ms-0  text-uppercase border-bottom  sticky-top">
+        <div class="container">
+            <a class="navbar-brand fs-3 " href="#">Welcome {{username}}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-4 ">
+                    <li class="nav-item">
+                        <a  id="small_dash" class="nav-link fs-5 " data-sid="{{current_id}}" href="{% url 'task_board'%}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a  id="report" class="nav-link fs-5 " data-sid="{{current_id}}" href="#skills">Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5 " href="{% url 'go-start'%}">Logout</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+ <!--used to display the raise query button form-->
+<center>
+<div id="response_content" class="container4">
+  
+
+  <h2>Response query</h2>
+  <h3>Response to a query: <button data-sid="{{type}}" type="button" id="res_query" class="btn ">Response</button></h3>
+  <h3>View Responded Query: <button  data-sid="{{current_id}}"type="button" id="view_query" class="btn ">View</button></h3>
+   <!--Displaying the received queries-->
+  <div id="test"class="temp">
+    <table class="query-table">
+      <h4>Received Queries</h4>
+    
+      <thead>
+        <tr>
+          <th>Query ID</th>
+          <th>Query Title</th>
+          <th>Query Date</th>
+          <th>Query Status</th>
+          <th>Update Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="qqres" class="container5">
+        
+      </tbody>
+    </table>
+  </div>
+
+
+ <!--Displaying the responded query-->
+  <div id="test2"class="temp">
+    <table class="query-table">
+  
+      <h2>Responsed Query</h2>
+    
+      <thead>
+        <tr>
+          <th>Query ID</th>
+          <th>Query Title</th>
+          <th>Query Date</th>
+          <th>Responded Date</th>
+          <th>Query Status</th>
+        </tr>
+      </thead>
+      <tbody id="rrquery" class="container5">
+       
+      </tbody>
+      
+    </table>
+
+
+
+  </div>
+  <div class="test3">
+    <table class="query-table">
+      <h2>Response Query</h2>
+     
+        <thead>
+          <tr>
+            <th>Query ID</th>
+            <th>Query Title</th>
+            <th>Query Date</th>
+            <th>Responded Date</th>
+            <th>Query Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="res_data">
+         
+        </tbody>
+    </table>
+  </div>
+    
+  
+  
+</div>
+
+</center>
+ <!--modal to enter the response which cotaining the query question-->
+<div class="modal fade" id="quesmodel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel" >Respond to Query</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>Query:</h4>
+        <h5 id="query_ques"></h5>
+        <form>
+          <div class="mb-3">
+            <label for="message-text" data-sid=sid class="col-form-label">Response:</label>
+            <textarea id="responded_data"class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="respond_click"data-sid="{{ query_dat.id }}"class="btn">Send Response</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!--Display the report content of query which is not responded-->
+
+<div id="report_content" class="container6">
+  <div class="form-group">
+    <h4>Queries which is not responded</h4>
+      <div id="demo">
+        <table class="query-table">
+          <thead>
+            <tr>
+              <th>Query ID</th>
+              <th>Query Title</th>
+              <th>Query Type</th>
+              <th>Query status</th>
+            </tr>
+          </thead>
+          <tbody id="result_new">
+           
+          </tbody>
+        </table>
+     </div>
+    <button type="submit" id="get_new_report"class="submit-button">View</button>  
+  </div>
+
+  
+ <!--Display the report content of query which is responded-->
+  <div class="form-group">
+    <h4>Queries which is responded<h4>
+      <div id="demo2">
+        <table class="query-table">
+          <thead>
+            <tr>
+              <th>Query ID</th>
+              <th>Query Title</th>
+              <th>Query Date</th>
+              <th>Responded Date</th>
+              <th>Query Status</th>
+            </tr>
+          </thead>
+          <tbody id="result_old">
+           
+          </tbody>
+        </table>
+      </div>  
+    <button type="submit" data-sid="{{query_datass.res_typ}}"id="get_report"class="submit-button">View</button>  
+  </div>
+  <button type="button" id="close_ress" class="btn">Close</button>
+</div>
+
+
+<div class="modal" id="queryModals" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Responded Detail</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="response_details"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="{% static 'JS/scripts.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+<script>
+
+
+
+/*$("#res_query").click(function(){
+    $("#qqres").show();
+    $("#rrquery").hide();
+    $("#test").show();
+    var x;
+    output="";
+    var type_id = $(this).data('sid');
+    console.log(type_id);
+    $.ajax({
+        url:"{% url 'respond_to' %}",
+        type:"POST",
+        data:{ admin_type: type_id},
+        success:function(data){
+            x=data.response_query
+            console.log(x)
+            for(i=0;i<x.length;i++){
+                output +=
+                    "<tr><td>" + x[i].id +
+                    "</td><td>" + x[i].query_title +
+                    "</td><td>" + x[i].query_priority +
+                    "</td><td>" + x[i].query_date +
+                    "</td><td>" + x[i].query_sender +
+                    "</td><td>" + x[i].query_status +
+                    "</td><td> <select id='status' name='status'><option value='closed'>Closed</option><option value='hold'>Hold</option></select><button type='submit'  data-sid= "+ x[i].id + " id='status_change'class='submit-button'>Change Status</button>"
+                    "</td><td> <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal'  data-sid= "+ x[i].id + " data-bs-whatever='@getbootstrap'>Respond</button>"
+                
+        }
+        $("#qqres").html(output);
+    
+
+
+        },
+        error: function(xhr, status, error) {
+        console.error("Error fetching query details:", error);
+      }
+
+    });
+
+});*/
+
+//function used to display the query which is received 
+$(document).ready(function() {
+    $(document).on("click", "#res_query", function() {
+        $("#qqres").show(500);
+        $("#rrquery").hide();
+        $("#test").show(500);
+        $("#test2").hide();
+        $(".test3").hide();
+        var x;
+        output = "";
+        var type_id = $(this).data('sid');
+        console.log(type_id);
+        $.ajax({
+            url: "{% url 'respond_to' %}",
+            type: "POST",
+            data: { admin_type: type_id },
+            success: function(data) {
+                x = data.response_query
+                console.log(x)
+                if (Array.isArray(x) && x.length === 0){
+                  output+="Queries are empty";
+                }
+                else{
+                  for (i = 0; i < x.length; i++) {
+                    output +=
+                        "<tr><td>" + x[i].id +
+
+                        
+                        "</td><td>" + x[i].query_title +
+                            "</td><td>" + x[i].query_date +
+
+                        "</td><td>" + x[i].query_status +
+                        "</td><td> <select id='status' name='status'  ><option id='cl1'  value='new'>New</option><option id='cl2' value='closed'>Closed</option><option id='cl3' value='hold'>Hold</option></select><br><button type='submit' data-sud="+x[i].id_user_id+" data-sid= " + x[i].id + " id='status_change'class='submit-button'>Change Status</button>"+
+                        "</td><td> <button type='button' class='btn'  id='get_res'  data-sid= " + x[i].id + ">Respond</button>"
+
+                }
+                /*<button type='button' class='btn btn-primary'  id='get_res'  data-sid= " + x[i].id + ">Respond</button>"*/
+                }
+                $("#qqres").html(output);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching query details:", error);
+            }
+
+        });
+
+    });
+});
+
+
+$('#cl1').hover(
+    function() {
+      $(this).css('background-color', 'orange'); // or 'none'
+    }
+  )
+
+
+//function used to display the entered query
+$(document).ready(function() {
+  $(document).on("click", "#view_query", function() {
+    // Show the container before making the AJAX call
+    $("#rrquery").show(500);
+    $("#qqres").hide();
+    $("#test").hide();
+    $(".test3").hide(); 
+    var ress_id = $(this).data('sid');
+    console.log(ress_id);
+    mydata={query_userdata:ress_id};
+    console.log("vanakam da mapla");
+    var output = "";
+    var x;
+    $.ajax({
+      url:"{% url 'response__admin_data' %}",
+      type:"POST",
+      data:mydata,
+      success: function(data) {
+        x = data.responsed_datas;
+        console.log(x);
+        //loop the data to print as table
+        if (Array.isArray(x) && x.length === 0){
+                  output+="Queries are empty";
+                }
+        else{
+          for(var i = 0; i < x.length; i++){
+            output += "<tr><td>" + x[i].id +
+                      "</td><td>" + x[i].res_title +
+                      "</td><td>" + x[i].query_date +
+                      "</td><td>" + x[i].resonded_date +
+                      "</td><td>" + x[i].status +
+                      "</td></tr>"; // closed </tr> tag here
+          }
+          console.log(output);
+          // Update the content of #rrquery after AJAX success
+          $("#rrquery").html(output);
+          $("#test2").show();
+        }
+        $("#rrquery").html(output);
+        $("#test2").show();
+
+      },
+      error: function(xhr, status, error) {
+        console.error("Error fetching query details:", error);
+      }
+    });
+  });
+});
+
+
+
+  
+/* function to handle and change status change of queries */
+
+  $(document).on("click", "#status_change", function() {
+    var x;
+    output = "";
+    var queryId = $(this).data('sid');
+    var org_query = $(this).data('sud');
+    console.log(org_query);
+    let curr_status = $("#status").val();
+    console.log(curr_status);
+    console.log("hello");
+    $.ajax({
+      url:"{% url 'update_status' %}",
+      type:"POST",
+      data:{q_id:queryId,get_status:curr_status,quer_org:org_query},
+      success: function(data) {
+          console.log("success")
+      
+          x = data.query_datass
+          console.log(x)
+                
+          if (Array.isArray(x) && x.length === 0){
+              output+="Queries are empty";
+          }
+          else{
+            for (i = 0; i < x.length; i++) {
+              output +=
+                  "<tr><td>" + x[i].id +
+                  "</td><td>" + x[i].query_title +
+                  "</td><td>" + x[i].query_date +
+                  "</td><td>" + x[i].query_status +
+                  "</td><td> <div id='status_data'><select id='status' name='status'><option value='new'>New</option><option value='closed'>Closed</option><option value='hold'>Hold</option></select><br><button type='submit' data-sud="+x[i].id_user_id+" data-sid= " + x[i].id + " id='status_change'class='submit-button'>Change Status</button></div>"+
+                  "</td><td> <button type='button' class='btn btn-primary'  id='get_res'  data-sid= " + x[i].id + ">Respond</button>"
+
+                }
+
+                }
+
+                
+          $("#qqres").html(output);
+          Swal.fire({
+      
+            title: "Status changed Successfully!",
+            icon: "success"
+          }); 
+},
+error: function(xhr, status, error) {
+console.error("Error fetching query details:", error);
+}
+})
+
+$("#test").hide();
+});
+
+/* function to get question of the query to respond */
+$(document).ready(function(){
+  $(document).on("click","#get_res",function(){
+    queryId = $(this).data('sid');
+    console.log(queryId);
+    var x;
+    $.ajax({
+        url:"{% url 'get_ques' %}",
+        type:"POST",
+        data:{res_id_:queryId},
+        success:function(data){
+          $("#query_ques").html(data.question_ques);
+          $("#quesmodel").modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error fetching query details:", error);
+        }
+      });
+      
+    });
+});
+
+  
+
+
+/* function to handle response submission */
+$(document).ready(function(){
+  $(document).on("click","#respond_click",function(){
+    var res_content=$("#responded_data").val();
+    console.log(res_content);
+    console.log("Query ID:", queryId);
+    $.ajax({
+      url:"{% url 'save_response' %}",
+      type:"POST",
+      data:{res_id:queryId,res_data:res_content},
+      success:function(data){
+        temp=data.status;
+        console.log(temp)
+        if(temp!="nothing"){
+          Swal.fire({
+            title: "Responded to Query Successfully",
+            icon: "success"
+          }).then((result) => {
+              if (result.isConfirmed) {
+                
+                $("#quesmodel").modal('hide');
+                
+                $('#responded_data').val('');
+                $('#test').hide();
+              }
+            });
+        }
+        else{
+          Swal.fire({
+            icon:"error",
+            title:"Oops!!",
+            text:"response cannot be empty minimun length is 20"
+
+          });
+        }
+        $("#responded_data")[0].reset();
+        
+        
+       
+        
+
+
+      },
+      error: function(xhr, status, error) {
+        console.error("Error fetching query details:", error);
+      }
+    });
+  
+    
+
+
+});
+});
+
+/* function to handle report button click */
+$(document).ready(function(){
+  $("#report").click(function(){
+    $("#response_content").hide();
+    $(".container3").hide();
+    $("#report_content").show(500);
+    $("#demo").hide();
+    $("#demo2").hide();   
+});
+});
+
+/* function to handle closing report content */
+$("#close_ress").click(function(){
+  console.log("dei");
+  $("#response_content").show();
+    $(".container3").show(500);
+    $("#report_content").hide(500);
+    $("#demo").hide();
+    $("#demo2").hide();   
+
+ })
+
+ /* function to fetch and display new report */
+ $("#get_new_report").click(function(){
+  var x="hey";
+  var output="";
+  $("#demo").show();
+    $.ajax({
+      url: "{% url 'report' %}",  // URL to your Django view for fetching query details
+      type: "POST",
+      data: { test: x },
+      success: function(data) {
+        console.log("status", data.status);
+        //stored the data to a variable
+        x=data.sended_queries;
+        //loop the data to print as table
+        if (Array.isArray(x) && x.length === 0){
+                  output+="Queries are empty";
+                }
+        else{
+          for(i=0;i<x.length;i++){
+            output +=
+                      "<tr><td>" + x[i].id +
+                      "</td><td>" + x[i].query_title+
+                        "</td><td>" + x[i].query_status +
+                        "</td></tr>"; 
+                        
+                      
+          }
+          //print the output in #demo id
+          $("#result_new").html(output);
+
+        }
+        $("#result_new").html(output);
+        console.log(output);
+          
+      },
+      error: function(xhr, status, error) {
+        console.error("Error fetching query details:", error);
+      }
+    });
+   
+
+ });
+
+/* function to fetch and display old report */
+ $("#get_report").click(function(){
+ 
+    var y="hey"
+    var output="";
+    var x;
+    $("#demo2").show();
+      $.ajax({
+        url: "{% url 'report' %}",  // URL to your Django view for fetching query details
+        type: "POST",
+        data: { test: y },
+        success: function(data) {
+          console.log("status", data.status);
+          //stored the data to a variable
+          x=data.responsed_queries;
+          console.log(x);
+          if (Array.isArray(x) && x.length === 0){
+                  output+="Queries are empty";
+                }
+          else{
+          
+          //loop the data to print as table
+            for(var i = 0; i < x.length; i++){
+                      output += "<tr><td>" + x[i].id +
+                                "</td><td>" + x[i].res_title +
+                                "</td><td>" + x[i].query_date +
+                                "</td><td>" + x[i].resonded_date +
+                                "</td><td>" + x[i].status +
+                                "</td></tr>";
+                                
+                                      }
+            //print the output in #demo id
+            $("#result_old").html(output);
+                                    }
+        $("#result_old").html(output);
+          
+        },
+        error: function(xhr, status, error) {
+          console.error("Error fetching query details:", error);
+        }
+      });
+   
+
+ });
+
+ /* functions to handle closing forms */
+ $("#btn-x").click(function(){
+  console.log("kkkk");
+  $('#new_query').hide(500);
+  $("#response_content").hide(500);
+  $('.container3').show(500);
+  
+  
+
+ });
+ $("#btn-x1").click(function(){
+  console.log("llllk");
+  $('#new_query').hide(500);
+  $("#response_content").hide(500);
+  $('.container3').show(500);
+  $("#previous_query").show(500);
+  $(".test3").hide();
+  });
+
+
+
+
+
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
